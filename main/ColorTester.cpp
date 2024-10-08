@@ -1,5 +1,6 @@
 //To use this program and the TCS34725 in general, connect the color sensor pins VIN, GND, SDA, and SCL to the ESP32 pins 
 //3V3, GND, GPIO21, and GPIO22 respectively. Doing so sets up the I2C connection. 
+//--Krish
 
 #include "sdkconfig.h"
 #ifndef CONFIG_BLUEPAD32_PLATFORM_ARDUINO

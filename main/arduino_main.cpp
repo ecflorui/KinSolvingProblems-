@@ -30,7 +30,7 @@ void onConnectedGamepad(GamepadPtr gp) {
         if (myGamepads[i] == nullptr) {
             myGamepads[i] = gp;
             foundEmptySlot = true;
-            break;
+            
         }
     }
 }

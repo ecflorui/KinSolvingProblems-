@@ -46,6 +46,7 @@ void onDisconnectedGamepad(GamepadPtr gp) {
     }
 }
 
+
 void setup() {
     BP32.setup(&onConnectedGamepad, &onDisconnectedGamepad);
     BP32.forgetBluetoothKeys();
@@ -61,11 +62,9 @@ void setup() {
     Serial.begin(115200);
 }
 
-void loop() {
-    BP32.update();
-    for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
-        GamepadPtr controller = myGamepads[i];
-        if (controller && controller->isConnected()) {
+void servo1(int i) {
+    GamepadPtr controller = myGamepads[i];
+     if (controller && controller->isConnected()) {
            
             if (controller->l1() == 1) {
                 Serial.print("Servo move");
@@ -73,14 +72,19 @@ void loop() {
             }
              if (controller->r1() == 1) {
                 Serial.print("Servo move");
-                servo.write(-1000);
+                servo.write(1000);
             }
             if (controller->l1() == 0) {
                 Serial.print("Servo stop");
                 servo.write(1500);
             }
 
-            if(controller->axisRY() > 0) { // negative y is upward on stick
+}
+}
+
+void dcmotor(int i) {
+    GamepadPtr controller = myGamepads[i];
+     if(controller->axisRY() > 0) { // negative y is upward on stick
                 Serial.println(" DC motor move");
                 digitalWrite(IN1, LOW);
                 digitalWrite(IN2, HIGH);
@@ -95,13 +99,20 @@ void loop() {
                 digitalWrite(IN4, LOW);
             }
 
-           
-           
+}
 
-            // PHYSICAL BUTTON A
-            if (controller->b()) {
-                Serial.println("button a pressed");
-            }
+void loop() {
+    BP32.update();
+    for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
+        GamepadPtr controller = myGamepads[i];
+        if (controller && controller->isConnected()) {
+           servo1(i);
+           dcmotor(i);
+
+            // // PHYSICAL BUTTON A
+            // if (controller->b()) {
+            //     Serial.println("button a pressed");
+            // }
 
         }
         vTaskDelay(1);

@@ -73,7 +73,7 @@ void loop() {
             }
              if (controller->r1() == 1) {
                 Serial.print("Servo move");
-                servo.write(-1000);
+                servo.write(1000);
             }
             if (controller->l1() == 0) {
                 Serial.print("Servo stop");

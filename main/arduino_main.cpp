@@ -14,10 +14,9 @@
 #include <bits/stdc++.h>
 
 
+
 #define IN1 12
 #define IN2 14
-#define IN3 25
-#define IN4 33
 
 Servo servo;
 
@@ -46,7 +45,6 @@ void onDisconnectedGamepad(GamepadPtr gp) {
     }
 }
 
-
 void setup() {
     BP32.setup(&onConnectedGamepad, &onDisconnectedGamepad);
     BP32.forgetBluetoothKeys();
@@ -56,21 +54,17 @@ void setup() {
     // motor controller outputs
     pinMode(IN1, OUTPUT);
     pinMode(IN2, OUTPUT);
-    pinMode(IN3, OUTPUT);
-    pinMode(IN4, OUTPUT);
    
     Serial.begin(115200);
 }
 
-void servo1(int i) {
-    GamepadPtr controller = myGamepads[i];
-     if (controller && controller->isConnected()) {
+void loop() {
+    BP32.update();
+    for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
+        GamepadPtr controller = myGamepads[i];
+        if (controller && controller->isConnected()) {
            
             if (controller->l1() == 1) {
-                Serial.print("Servo move");
-                servo.write(1000);
-            }
-             if (controller->r1() == 1) {
                 Serial.print("Servo move");
                 servo.write(1000);
             }
@@ -79,40 +73,21 @@ void servo1(int i) {
                 servo.write(1500);
             }
 
-}
-}
-
-void dcmotor(int i) {
-    GamepadPtr controller = myGamepads[i];
-     if(controller->axisRY() > 0) { // negative y is upward on stick
+            if(controller->axisRY() > 0) { // negative y is upward on stick
                 Serial.println(" DC motor move");
                 digitalWrite(IN1, LOW);
                 digitalWrite(IN2, HIGH);
-                digitalWrite(IN3, LOW);
-                digitalWrite(IN4, HIGH);
             }
             if(controller->axisRY() == 0) { // stop motor 1
                 Serial.println(" DC motor stop");
                 digitalWrite(IN1, LOW);
                 digitalWrite(IN2, LOW);
-                digitalWrite(IN3, LOW);
-                digitalWrite(IN4, LOW);
             }
 
-}
-
-void loop() {
-    BP32.update();
-    for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
-        GamepadPtr controller = myGamepads[i];
-        if (controller && controller->isConnected()) {
-           servo1(i);
-           dcmotor(i);
-
-            // // PHYSICAL BUTTON A
-            // if (controller->b()) {
-            //     Serial.println("button a pressed");
-            // }
+            // PHYSICAL BUTTON A
+            if (controller->b()) {
+                Serial.println("button a pressed");
+            }
 
         }
         vTaskDelay(1);

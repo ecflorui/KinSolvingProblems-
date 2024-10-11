@@ -14,11 +14,15 @@
 #include <bits/stdc++.h>
 
 
-
-#define IN1 12
-#define IN2 14
-
-Servo servo;
+#define IN1 4
+#define IN2 16
+#define ENA 17
+#define IN3 5
+#define IN4 18
+#define ENB 19
+int joyX;
+int joyY;
+//Servo servo;
 
 GamepadPtr myGamepads[BP32_MAX_GAMEPADS];
 
@@ -44,18 +48,67 @@ void onDisconnectedGamepad(GamepadPtr gp) {
         }
     }
 }
+//ENA
+void rightMotor(int speed){
+    if(speed >= 0){
+        if (speed > 255){
+        speed = 255;
+        }
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
+    }
+    else if(speed < 0){
+    speed = speed*(-1);
+        if (speed > 255){
+        speed = 255;
+        }
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
+    }
+    analogWrite(ENA, speed);
+    //Serial.print("Right Motor :: ");
+    //Serial.println(speed);
+}
+//ENB
+void leftMotor(int speed){
+    
+    if(speed >= 0){
+        if (speed > 255){
+        speed = 255;
+        }
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, HIGH);
+    }
+    else if(speed < 0){
+        speed = speed*(-1);
+        if (speed > 255){
+        speed = 255;
+        }
+        digitalWrite(IN3, HIGH);
+        digitalWrite(IN4, LOW);
+    }
+    analogWrite(ENB, speed);
+    //Serial.print("Left Motor :: ");
+    //Serial.println(speed);
+}
 
 void setup() {
     BP32.setup(&onConnectedGamepad, &onDisconnectedGamepad);
     BP32.forgetBluetoothKeys();
  
-    servo.attach(15);
+    //servo.attach(15);
 
     // motor controller outputs
     pinMode(IN1, OUTPUT);
     pinMode(IN2, OUTPUT);
+    pinMode(ENA, OUTPUT);
+    pinMode(IN3, OUTPUT);
+    pinMode(IN4, OUTPUT);
+    pinMode(ENB, OUTPUT);
    
     Serial.begin(115200);
+    joyX = 0;
+    joyY = 0;
 }
 
 void loop() {
@@ -63,8 +116,14 @@ void loop() {
     for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
         GamepadPtr controller = myGamepads[i];
         if (controller && controller->isConnected()) {
-           
-            if (controller->l1() == 1) {
+            if (controller->b()) {
+                Serial.println("button a pressed");
+            }
+            joyX = controller->axisX() / 3;
+            joyY = controller->axisY() / 3;
+            rightMotor(joyY+joyX);
+            leftMotor(joyY-joyX);
+           /*if (controller->l1() == 1) {
                 Serial.print("Servo move");
                 servo.write(1000);
             }
@@ -82,12 +141,9 @@ void loop() {
                 Serial.println(" DC motor stop");
                 digitalWrite(IN1, LOW);
                 digitalWrite(IN2, LOW);
-            }
+            }*/
 
             // PHYSICAL BUTTON A
-            if (controller->b()) {
-                Serial.println("button a pressed");
-            }
 
         }
         vTaskDelay(1);

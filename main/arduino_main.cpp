@@ -164,8 +164,8 @@ void loop() {
             }
 
             if (mode == 1) { //manual control 
-            joyX = controller->axisX() / 3;
-            joyY = controller->axisY() / 3;
+            joyX = controller->axisX() / 4;
+            joyY = controller->axisY() / 4;
             rightMotor(joyY+joyX);
             leftMotor(joyY-joyX);
             }

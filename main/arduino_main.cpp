@@ -15,6 +15,7 @@
 #include <ESP32SharpIR.h>
 #include <QTRSensors.h>
 #include <Arduino_APDS9960.h>
+#include <Wire.h>
 
 
 #define IN1 4

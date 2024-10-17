@@ -1,0 +1,8 @@
+source "C:/Users/singh/esp/v4.4.8/esp-idf/components/app_update/Kconfig.projbuild"
+source "C:/Users/singh/esp/v4.4.8/esp-idf/components/bootloader/Kconfig.projbuild"
+source "C:/Users/singh/esp/v4.4.8/esp-idf/components/esp_rom/Kconfig.projbuild"
+source "C:/Users/singh/esp/v4.4.8/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "C:/Users/singh/esp/v4.4.8/esp-idf/components/partition_table/Kconfig.projbuild"
+source "C:/Users/singh/KinSolvingProblemsTM/main/Kconfig.projbuild"
+source "C:/Users/singh/KinSolvingProblemsTM/components/arduino/Kconfig.projbuild"
+source "C:/Users/singh/KinSolvingProblemsTM/components/btstack/Kconfig.projbuild"
